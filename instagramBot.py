@@ -1,5 +1,6 @@
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
+from selenium.common.exceptions import ElementClickInterceptedException
 import time
 
 SIMILAR_ACCOUNT = "chefsteps"
@@ -57,4 +58,14 @@ class InstaFollower:
             time.sleep(2)
 
     def follow(self):
-        pass
+        """
+        Method to follow instagram users.
+        """
+        all_buttons = self.driver.find_elements_by_css_selector("li button")
+        for button in all_buttons:
+            try:
+                button.click()
+                time.sleep(1)
+            except ElementClickInterceptedException:
+                cancel_button = self.driver.find_element_by_xpath('/html/body/div[5]/div/div/div/div[3]/button[2]')
+                cancel_button.click()
